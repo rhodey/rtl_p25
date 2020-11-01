@@ -1,4 +1,4 @@
 target/
+liquid_dsp_rs/debug/
 
 *\.swp
-**/*.rs.bk

@@ -3,6 +3,7 @@ Rust P25 decoder built atop [liquid-dsp](http://liquidsdr.org/), compatible with
 
 # usage
 ```
+$ cargo build --target-dir liquid_dsp_rs/
 $ cargo build --release
 $ cargo install --path .
 $ ./target/release/rtl_p25 -d 0 -s 1200000 [-g 62 -p 0] -x 2

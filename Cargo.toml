@@ -1,10 +1,8 @@
 [package]
 name = "rtl_p25"
-version = "0.1.0"
+version = "0.2.0"
 
 [dependencies]
 clap = "2.32.0"
 num-complex = "0.2"
-
-[dependencies.liquid_dsp_rs]
-git = "https://github.com/radiowitness/liquid_dsp_rs.git"
+liquid_dsp_rs = { path = "liquid_dsp_rs", version = "0.2.0" }
