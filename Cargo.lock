@@ -306,7 +306,7 @@ dependencies = [
 
 [[package]]
 name = "rtl_p25"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "clap",
  "liquid_dsp_rs",

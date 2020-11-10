@@ -15,12 +15,13 @@ use rtl_p25::pipeline::Pipeline;
 extern crate liquid_dsp_rs;
 use liquid_dsp_rs::LiquidComplex32;
 
-fn tune(pipes: &mut [Pipeline], rtl_rs: &mut Write, _args: &[&str]) {
+fn tune(pipes: &mut [Pipeline], rtl_rs: &mut dyn Write, _args: &[&str]) {
   let freq: u32 = _args[0].parse().unwrap();
+  let txn: i32 = _args[1].parse().unwrap();
   let cmd = format!("-f {}\n", freq);
   rtl_rs.write(&cmd.to_string().as_bytes()).unwrap();
-  for mut pipe in pipes { pipe.retune(freq); }
-  io::stdout().write(format!("ok,{}\n", freq).as_bytes()).unwrap();
+  for pipe in pipes { pipe.retune(freq); }
+  io::stdout().write(format!("ok,{},{}\n", freq, txn).as_bytes()).unwrap();
   io::stdout().flush().unwrap();
 }
 
@@ -28,9 +29,10 @@ fn demod(pipes: &mut [Pipeline], _args: &[&str]) {
   let pipe: usize = _args[0].parse().unwrap();
   let offset: i32 = _args[1].parse().unwrap();
   let output: &str = _args[2];
-  io::stdout().write(b"ok\n").unwrap();
-  io::stdout().flush().unwrap();
   pipes[pipe].demod(offset, output);
+  let txn: i32 = _args[3].parse().unwrap();
+  io::stdout().write(format!("ok,{}\n", txn).as_bytes()).unwrap();
+  io::stdout().flush().unwrap();
 }
 
 fn main() {
@@ -90,7 +92,7 @@ fn main() {
   let symbol_rate = CHN_RATE / SYMBOL_RATE;
   let num_symbols = ((num_resampled as f32) / symbol_rate).ceil() as usize;
 
-  for mut pipeline in &mut pipelines {
+  for pipeline in &mut pipelines {
     pipeline.mixer.size_buf(iq_buf.len());
     pipeline.baseband.size_buf(num_resampled);
     pipeline.demod.size_buf(num_symbols);
@@ -115,7 +117,7 @@ fn main() {
   while let Ok(_) = input.read_exact(&mut input_buf) {
     match rx.try_recv() {
       Ok(cmd) => {
-        eprintln!("!!cmd!! {}", cmd);
+        eprintln!("cmd: {}", cmd);
         let args: Vec<_> = cmd.split(',').collect();
         match args[0] {
           "tune" => { tune(&mut pipelines, &mut output, &args[1..]) },
@@ -134,7 +136,7 @@ fn main() {
       idx += 1;
     }
 
-    for mut pipeline in &mut pipelines {
+    for pipeline in &mut pipelines {
       pipeline.next_block(&mut iq_buf);
     }
   }
