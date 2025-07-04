@@ -1,5 +1,5 @@
 # rtl_p25
-Rust RTLSDR P25 decoder built with [liquid-dsp](http://liquidsdr.org/)
+RTLSDR P25 decoder built with [liquid-dsp](http://liquidsdr.org/)
 
 ## Build
 See Dockerfile if you want to install within your OS / not inside container
@@ -10,11 +10,11 @@ docker build -t rtl_p25 .
 ## Run
 The helper script rtl_devices.sh adds args needed to map USB to the container
 ```
-docker run $(./rtl_devices.sh) --rm -it rtl_p25 -d 0 -s 1200000 -x 2 -g 62 -p 0
+docker run $(./rtl_devices.sh) --rm -it rtl_p25 -x 2 -d 0 -s 1200000 -g 62 -p 0
 ```
 
 # Usage
-This program has been designed to be run by other programs following `mkfifo` patterns described in [better sdr drivers](https://rhodey.org/blog/better-sdr-drivers). Run rtl_p25 as a child process in your language of choice then hold onto stdin, stdout, and stderr. All arguments follow RTLSDR [conventions](https://osmocom.org/projects/rtl-sdr/wiki/Rtl-sdr) except `-x` added for 'mux' aka number of channels.
+This program has been designed to be run by other programs following `mkfifo` patterns described in [better sdr drivers](https://rhodey.org/blog/better-sdr-drivers). Run rtl_p25 as a child process in your language of choice then hold onto stdin, stdout, and stderr. All arguments follow RTLSDR [conventions](https://osmocom.org/projects/rtl-sdr/wiki/Rtl-sdr) except `-x` added for mux aka number of channels.
 
 ```
 mkfifo /tmp/mux0 && mkfifo /tmp/mux1
