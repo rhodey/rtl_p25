@@ -26,7 +26,7 @@ WORKDIR ${HOME}/include
 RUN git clone -b master --single-branch --depth=1 https://github.com/rhodey/rtl_rs
 WORKDIR ${HOME}/include/rtl_rs
 RUN rustup override add nightly
-RUN cargo install --force --path .
+RUN cargo install --path .
 
 WORKDIR ${HOME}/include
 RUN git clone --depth=1 https://github.com/rhodey/liquid-dsp
