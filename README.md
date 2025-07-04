@@ -10,7 +10,7 @@ docker build -t rtl_p25 .
 ## Run
 The helper script rtl_devices.sh adds args needed to map USB to the container
 ```
-docker run $(./rtl_devices.sh) --rm -it rtl_p25 -x 2 -d 0 -s 1200000 -g 62 -p 0
+docker run $(./rtl_devices.sh) --rm -i rtl_p25 -x 2 -d 0 -s 1200000 -g 62 -p 0
 ```
 
 # Usage
