@@ -20,12 +20,12 @@ WORKDIR ${HOME}/include/librtlsdr/build
 RUN cmake ../ -DINSTALL_UDEV_RULES=ON -DDETACH_KERNEL_DRIVER=ON
 RUN make
 RUN make install
+RUN ldconfig || true
 
 WORKDIR ${HOME}/include
 RUN git clone -b master --single-branch --depth=1 https://github.com/rhodey/rtl_rs
 WORKDIR ${HOME}/include/rtl_rs
 RUN rustup override add nightly
-RUN cargo build --release
 RUN cargo install --force --path .
 
 WORKDIR ${HOME}/include
@@ -44,6 +44,6 @@ COPY liquid_dsp_rs/ liquid_dsp_rs/
 COPY src/ src/
 
 RUN cargo build --target-dir liquid_dsp_rs
-RUN cargo install --force --path .
+RUN cargo build --release
 
 ENTRYPOINT ["target/release/rtl_p25"]
